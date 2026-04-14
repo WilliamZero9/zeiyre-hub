@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zeiyre -- Free Developer Tools</title>
+  <meta name="description" content="Free tools for developers, freelancers, and creators. Freelancer rate calculator, meta tag generator, prompt templates, and more.">
+  <meta name="author" content="Zeiyre">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Zeiyre -- Free Developer Tools">
+  <meta property="og:description" content="Free tools for developers, freelancers, and creators. Calculate freelance rates, generate meta tags, and get curated prompt templates.">
+  <meta property="og:image" content="/og-image.png">
+  <meta property="og:url" content="https://zeiyre.netlify.app">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Zeiyre -- Free Developer Tools">
+  <meta name="twitter:description" content="Free tools for developers, freelancers, and creators. Calculate freelance rates, generate meta tags, and get curated prompt templates.">
+  <meta name="twitter:image" content="/og-image.png">
+
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0a0a0a;
+      --bg-card: #111113;
+      --border: #1e1e24;
+      --border-hover: #2a2a34;
+      --text: #e4e4e7;
+      --text-muted: #71717a;
+      --accent: #3b82f6;
+      --accent-glow: rgba(59, 130, 246, 0.15);
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, sans-serif;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Subtle grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* NAV */
+    nav {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 1.125rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .nav-tag {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 100px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* HERO */
+    .hero {
+      padding: 80px 0 60px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 .accent {
+      color: var(--accent);
+    }
+
+    .hero p {
+      font-size: 1.125rem;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* TOOLS GRID */
+    .tools {
+      padding: 0 0 80px;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      padding-left: 2px;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .tool-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 28px 24px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .tool-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 0 40px var(--accent-glow);
+    }
+
+    .tool-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .tool-name {
+      font-size: 1.125rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .tool-badge {
+      font-size: 0.6875rem;
+      padding: 3px 10px;
+      border-radius: 100px;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .badge-live {
+      background: rgba(34, 197, 94, 0.1);
+      color: #4ade80;
+      border: 1px solid rgba(34, 197, 94, 0.2);
+    }
+
+    .badge-soon {
+      background: rgba(250, 204, 21, 0.08);
+      color: #fbbf24;
+      border: 1px solid rgba(250, 204, 21, 0.15);
+    }
+
+    .tool-desc {
+      color: var(--text-muted);
+      font-size: 0.9375rem;
+      line-height: 1.6;
+    }
+
+    .tool-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 4px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+      transition: gap 0.15s;
+    }
+
+    .tool-cta:hover {
+      gap: 10px;
+    }
+
+    .tool-cta .arrow {
+      transition: transform 0.15s;
+      font-size: 1rem;
+    }
+
+    .tool-cta:hover .arrow {
+      transform: translateX(2px);
+    }
+
+    .tool-cta-disabled {
+      color: var(--text-muted);
+      cursor: default;
+      font-size: 0.875rem;
+      margin-top: 4px;
+    }
+
+    /* FOOTER */
+    footer {
+      margin-top: auto;
+      border-top: 1px solid var(--border);
+      padding: 24px 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .footer-inner p {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+
+    /* RESPONSIVE */
+    @media (min-width: 640px) {
+      .tools-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .tool-card:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+        max-width: calc(50% - 8px);
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero {
+        padding: 52px 0 40px;
+      }
+
+      .tool-card {
+        padding: 20px;
+      }
+
+      .tools {
+        padding-bottom: 48px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="container nav-inner">
+      <div class="logo"><span>Z</span>eiyre</div>
+      <div class="nav-tag">Free Tools</div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>Free tools for <span class="accent">developers</span>, freelancers, and creators.</h1>
+        <p>Small, focused utilities that solve real problems. No sign-ups, no paywalls, no tracking. Built by Zeiyre.</p>
+      </div>
+    </section>
+
+    <section class="tools">
+      <div class="container">
+        <div class="section-label">Tools</div>
+        <div class="tools-grid">
+
+          <article class="tool-card">
+            <div class="tool-card-header">
+              <h2 class="tool-name">Freelancer Rate Calculator</h2>
+              <span class="tool-badge badge-live">Live</span>
+            </div>
+            <p class="tool-desc">Calculate your ideal freelance hourly rate based on expenses, desired salary, and billable hours.</p>
+            <a href="https://freelancer-rate-calc.netlify.app" class="tool-cta" target="_blank" rel="noopener">
+              Try it free <span class="arrow">&rarr;</span>
+            </a>
+          </article>
+
+          <article class="tool-card">
+            <div class="tool-card-header">
+              <h2 class="tool-name">Meta Tag Generator</h2>
+              <span class="tool-badge badge-live">Live</span>
+            </div>
+            <p class="tool-desc">Generate SEO-optimized meta tags for your website instantly. Open Graph, Twitter Cards, and standard meta.</p>
+            <a href="https://delicate-hummingbird-564b8c.netlify.app" class="tool-cta" target="_blank" rel="noopener">
+              Try it free <span class="arrow">&rarr;</span>
+            </a>
+          </article>
+
+          <article class="tool-card" style="border-color: rgba(34, 197, 94, 0.3)">
+            <div class="tool-card-header">
+              <h2 class="tool-name">Prompt Playbook</h2>
+              <span class="tool-badge badge-live">$5</span>
+            </div>
+            <p class="tool-desc">50+ expert prompt templates for developers and creators. Tested, copy-paste-ready patterns that get better results from AI tools.</p>
+            <a href="https://prompt-playbook-landing.netlify.app" class="tool-cta" target="_blank" rel="noopener">
+              Learn more <span class="arrow">&rarr;</span>
+            </a>
+          </article>
+
+          <!-- TODO: Update href once Invoice Generator is deployed to Netlify -->
+          <article class="tool-card">
+            <div class="tool-card-header">
+              <h2 class="tool-name">Invoice Generator</h2>
+              <span class="tool-badge badge-soon">Coming Soon</span>
+            </div>
+            <p class="tool-desc">Create professional invoices instantly. Add line items, set tax rates, and download as PDF.</p>
+            <span class="tool-cta-disabled">Coming soon</span>
+          </article>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Prompt Playbook Featured CTA -->
+  <section style="padding:0 0 60px">
+    <div class="container">
+      <div style="background:var(--bg-card);border:1px solid rgba(34,197,94,0.25);border-radius:12px;padding:32px;text-align:center">
+        <p style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:#4ade80;margin-bottom:12px;font-weight:600">Featured Product</p>
+        <h3 style="font-size:1.5rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:8px">Prompt Playbook</h3>
+        <p style="color:var(--text-muted);max-width:480px;margin:0 auto 20px;line-height:1.7">50+ expert prompt templates for developers. Debug faster, write better code, automate workflows, and get more from AI tools. Tested patterns, not theory.</p>
+        <p style="font-size:1.25rem;font-weight:700;color:#4ade80;margin-bottom:20px">$5</p>
+        <a href="https://prompt-playbook-landing.netlify.app" target="_blank" rel="noopener" style="display:inline-block;padding:12px 28px;background:var(--accent);color:#fff;text-decoration:none;border-radius:8px;font-size:0.9375rem;font-weight:600;transition:opacity 0.2s" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">See the Full Playbook &rarr;</a>
+        <p style="color:var(--text-muted);font-size:0.8rem;margin-top:12px">50+ expert prompt templates -- $5, delivered via email.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-inner">
+      <p>Built by Zeiyre</p>
+      <p><a href="https://ko-fi.com/zeiyre" target="_blank" rel="noopener" style="color: var(--text-muted); text-decoration: none; border-bottom: 1px solid var(--border); transition: color 0.2s, border-color 0.2s;" onmouseover="this.style.color='var(--accent)';this.style.borderColor='var(--accent)'" onmouseout="this.style.color='var(--text-muted)';this.style.borderColor='var(--border)'">Support Zeiyre on Ko-fi</a> &middot; <a href="https://paypal.me/LiamCarey0909" target="_blank" rel="noopener" style="color: var(--text-muted); text-decoration: none; border-bottom: 1px solid var(--border); transition: color 0.2s, border-color 0.2s;" onmouseover="this.style.color='var(--accent)';this.style.borderColor='var(--accent)'" onmouseout="this.style.color='var(--text-muted)';this.style.borderColor='var(--border)'">Tip via PayPal</a></p>
+      <p>More tools coming soon</p>
+    </div>
+  </footer>
+
+</body>
+</html>
